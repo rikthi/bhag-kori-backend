@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="users_rooms",
     joinColumns = {
             @JoinColumn(name="user_id", referencedColumnName="user_id")
@@ -39,7 +40,9 @@ public class User {
     inverseJoinColumns = {
             @JoinColumn(name="room_id", referencedColumnName = "room_name")
     })
-    private Set<Room> rooms;
+    private HashSet<Room> rooms;
+
+
 
 
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +25,16 @@ public class Room {
 
     @Column(name="room_name", nullable = false)
     private String name;
+
+    @Column(name= "room_description")
+    private String description;
+
+    @Column(name="room_create_time")
+    private LocalDateTime createTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "room_creator_id")
+    private User creatorId;
 
     @ManyToMany(mappedBy="rooms", fetch=FetchType.LAZY)
     private Set<User> members;
