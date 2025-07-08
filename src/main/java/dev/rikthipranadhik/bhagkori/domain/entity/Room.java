@@ -29,7 +29,7 @@ public class Room {
     @Column(name= "room_description")
     private String description;
 
-    @Column(name="room_create_time")
+    @Column(name="room_create_time", nullable=false)
     private LocalDateTime createTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

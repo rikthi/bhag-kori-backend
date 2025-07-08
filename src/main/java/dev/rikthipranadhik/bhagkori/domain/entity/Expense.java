@@ -24,15 +24,15 @@ public class Expense {
     @Column(name="expense_name", nullable=false)
     private String name;
 
-    @Column(name="expense_create_time")
+    @Column(name="expense_create_time",nullable=false)
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name="expense_payer_id")
+    @JoinColumn(name="expense_payer_id", nullable=false)
     private User payer;
 
     @ManyToOne
-    @JoinColumn(name="expense_room_id")
+    @JoinColumn(name="expense_room_id", nullable=false)
     private Room room;
 
 
