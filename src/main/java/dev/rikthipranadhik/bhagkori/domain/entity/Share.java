@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name="shares")
 @Getter
@@ -20,11 +22,18 @@ public class Share {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="share_expense_id")
+    @JoinColumn(name="share_expense_id", nullable=false)
     private Expense expense;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="share_debtor")
+    @JoinColumn(name="share_debtor", nullable=false)
     private User debtor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="share_creditor", nullable=false)
+    private User creditor;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
 
 }
