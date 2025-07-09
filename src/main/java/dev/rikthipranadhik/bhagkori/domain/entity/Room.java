@@ -34,7 +34,7 @@ public class Room {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "room_creator_id")
-    private User creatorId;
+    private User creator;
 
     @ManyToMany(mappedBy="rooms", fetch=FetchType.LAZY)
     private Set<User> members;

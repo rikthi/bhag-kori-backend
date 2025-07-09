@@ -25,7 +25,7 @@ public class Expense {
     private String name;
 
     @Column(name="expense_create_time",nullable=false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createTime;
 
     @ManyToOne
     @JoinColumn(name="expense_payer_id", nullable=false)
