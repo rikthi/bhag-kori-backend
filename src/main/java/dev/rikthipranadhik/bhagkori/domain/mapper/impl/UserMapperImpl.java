@@ -12,10 +12,10 @@ public class UserMapperImpl implements UserMapper{
         return new User(
                 userDto.id(),
                 userDto.email(),
+                userDto.phoneNumber(),
                 userDto.name(),
                 userDto.password(),
                 null
-
         );
     }
 
@@ -23,6 +23,7 @@ public class UserMapperImpl implements UserMapper{
         return new UserDto(
                 user.getId(),
                 user.getEmail(),
+                user.getPhoneNumber(),
                 user.getName(),
                 user.getPassword()
         );
