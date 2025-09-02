@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+
 
 @Entity
 @Table(name="rooms")
@@ -37,5 +38,5 @@ public class Room {
     private User creator;
 
     @ManyToMany(mappedBy="rooms", fetch=FetchType.LAZY)
-    private Set<User> members;
+    private Set<User> members = new HashSet<>();
 }

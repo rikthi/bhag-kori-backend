@@ -7,6 +7,7 @@ import dev.rikthipranadhik.bhagkori.repository.UserRepository;
 import dev.rikthipranadhik.bhagkori.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +51,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateAccount(Long id, User newUser) {
-        return null;
+        User oldUser = userRepository.findById(id).orElse(null);
+
+        if (oldUser == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        oldUser.setName(newUser.getName());
+        oldUser.setEmail(newUser.getEmail());
+        oldUser.setPhoneNumber(newUser.getPhoneNumber());
+        oldUser.setPassword(newUser.getPassword());
+        return userRepository.save(oldUser);
     }
 }

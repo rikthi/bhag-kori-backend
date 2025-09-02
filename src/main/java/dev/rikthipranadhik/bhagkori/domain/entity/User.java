@@ -43,12 +43,6 @@ public class User {
     inverseJoinColumns = {
             @JoinColumn(name="room_id", referencedColumnName = "room_name")
     })
-    private HashSet<Room> rooms;
-
-
-
-
-
-
+    private Set<Room> rooms = new HashSet<>();
 
 }
