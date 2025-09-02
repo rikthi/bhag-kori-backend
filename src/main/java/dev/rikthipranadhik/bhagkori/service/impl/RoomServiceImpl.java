@@ -43,15 +43,20 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room addMember(Room room, User member) {
-        Room repoRoom = roomRepository.findById(room.getId()).orElse(null);
+    public Room addMember(Long roomId, Long memberId) {
+        Room repoRoom = roomRepository.findById(roomId).orElse(null);
+        User member = userRepository.findById(memberId).orElse(null);
 
         if (repoRoom == null){
             throw new RuntimeException("Room not found");
         }
 
+        if (member == null){
+            throw new RuntimeException("Member not found");
+        }
+
         for (User u : repoRoom.getMembers()) {
-            if (u.getId().equals(member.getId())) {
+            if (u.getId().equals(memberId)) {
                 throw new RuntimeException("Member already exists");
             }
         }
@@ -65,19 +70,25 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room removeMember(Room room, User member) {
-        Room repoRoom = roomRepository.findById(room.getId()).orElse(null);
+    public Room removeMember(Long roomId, Long memberId) {
+        Room repoRoom = roomRepository.findById(roomId).orElse(null);
+        User member = userRepository.findById(memberId).orElse(null);
 
         if (repoRoom == null){
             throw new RuntimeException("Room not found");
         }
 
+        if (member == null){
+            throw new RuntimeException("Member not found");
+        }
+
         User toBeRemoved = null;
         for (User u : repoRoom.getMembers()) {
-            if (u.getId().equals(member.getId())) {
+            if (u.getId().equals(memberId)) {
                 toBeRemoved = u;
             }
         }
+
         if (toBeRemoved == null){
             throw new IllegalArgumentException("Member not found");
         }

@@ -9,7 +9,7 @@ public interface RoomService {
     Room createRoom(Long creatorId, Room room);
     Room updateRoom(Room room);
     void deleteRoom(Room room);
-    Room addMember(Room room, User member);
-    Room removeMember(Room room, User member);
+    Room addMember(Long roomId, Long memberId);
+    Room removeMember(Long roomId, Long memberId);
     Set<User> getMembers(Room room);
 }

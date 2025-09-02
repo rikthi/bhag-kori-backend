@@ -3,6 +3,7 @@ package dev.rikthipranadhik.bhagkori.controller;
 import dev.rikthipranadhik.bhagkori.domain.dto.RoomDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.mapper.RoomMapper;
+import dev.rikthipranadhik.bhagkori.domain.requests.MemberAddToRoomRequest;
 import dev.rikthipranadhik.bhagkori.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,21 @@ public class RoomController {
     private final RoomMapper roomMapper;
 
     @PostMapping("/create")
-    public ResponseEntity<Room> createRoom(@RequestBody RoomDto roomDto){
+    public ResponseEntity<RoomDto> createRoom(@RequestBody RoomDto roomDto){
         Long creatorId = roomDto.creatorId();
         Room room = roomMapper.fromDto(roomDto);
 
-        return ResponseEntity.ok(roomService.createRoom(creatorId, room));
+        return ResponseEntity.ok(roomMapper.toDto(roomService.createRoom(creatorId, room)));
+    }
+
+    @PostMapping("/add/member")
+    public ResponseEntity<RoomDto> addMember(@RequestBody MemberAddToRoomRequest memberAddToRoomRequest){
+        return ResponseEntity.ok(roomMapper.toDto(roomService.addMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
+    }
+
+    @DeleteMapping("remove/member")
+    public ResponseEntity<RoomDto> removeMember(@RequestBody MemberAddToRoomRequest memberAddToRoomRequest){
+        return ResponseEntity.ok(roomMapper.toDto(roomService.removeMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
     }
 
 }
