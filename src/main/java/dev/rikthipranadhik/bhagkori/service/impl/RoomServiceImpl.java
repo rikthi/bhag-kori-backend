@@ -30,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteRoom(Room room) {
-
+        roomRepository.delete(room);
     }
 
     @Override
@@ -57,6 +57,36 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room removeMember(Room room, User member) {
-        return null;
+        Room repoRoom = roomRepository.findById(room.getId()).orElse(null);
+
+        if (repoRoom == null){
+            throw new RuntimeException("Room not found");
+        }
+
+        User toBeRemoved = null;
+        for (User u : repoRoom.getMembers()) {
+            if (u.getId().equals(member.getId())) {
+                toBeRemoved = u;
+            }
+        }
+        if (toBeRemoved == null){
+            throw new IllegalArgumentException("Member not found");
+        }
+
+        Set<User> members = repoRoom.getMembers();
+        members.remove(member);
+        repoRoom.setMembers(members);
+
+        return roomRepository.save(repoRoom);
+    }
+
+    @Override
+    public Set<User> getMembers(Room room) {
+        Room repoRoom = roomRepository.findById(room.getId()).orElse(null);
+        if (repoRoom == null){
+            throw new IllegalArgumentException("Room not found");
+        }
+
+        return repoRoom.getMembers();
     }
 }

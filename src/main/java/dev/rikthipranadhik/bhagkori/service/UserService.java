@@ -10,7 +10,7 @@ public interface UserService {
     void deleteAccount(User user);
     // User blockUser(User blocker, User blocked);
     User findByEmail(String email);
-    User findByPhoneNumber(Integer phoneNumber);
+    User findByPhoneNumber(String phoneNumber);
     List<User> getAllUsers();
     User updateAccount(Long id, User newUser);
 }

@@ -27,7 +27,7 @@ public class User {
     private String email;
 
     @Column(name="user_phone_number")
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(name= "user_name", nullable = false)
     private String name;
@@ -41,7 +41,7 @@ public class User {
             @JoinColumn(name="user_id", referencedColumnName="user_id")
     },
     inverseJoinColumns = {
-            @JoinColumn(name="room_id", referencedColumnName = "room_name")
+            @JoinColumn(name="room_id", referencedColumnName = "room_id")
     })
     private Set<Room> rooms = new HashSet<>();
 
