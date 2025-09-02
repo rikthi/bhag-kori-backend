@@ -6,7 +6,7 @@ import dev.rikthipranadhik.bhagkori.domain.entity.User;
 import java.util.Set;
 
 public interface RoomService {
-    Room createRoom(Room room);
+    Room createRoom(Long creatorId, Room room);
     Room updateRoom(Room room);
     void deleteRoom(Room room);
     Room addMember(Room room, User member);

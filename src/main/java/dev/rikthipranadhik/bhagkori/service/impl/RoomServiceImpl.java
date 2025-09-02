@@ -8,6 +8,7 @@ import dev.rikthipranadhik.bhagkori.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -19,7 +20,15 @@ public class RoomServiceImpl implements RoomService {
     private final UserRepository userRepository;
 
     @Override
-    public Room createRoom(Room room) {
+    public Room createRoom(Long creatorId, Room room) {
+        User creator = userRepository.findById(creatorId).orElse(null);
+        if (creator == null){
+            throw new IllegalArgumentException("Creation of room failed: no user found with id: " + creatorId);
+        }
+        room.setCreator(creator);
+        Set<User> users = new HashSet<>();
+        users.add(creator);
+        room.setMembers(users);
         return roomRepository.save(room);
     }
 
