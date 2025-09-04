@@ -37,12 +37,11 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="users_rooms",
-    joinColumns = {
-            @JoinColumn(name="user_id", referencedColumnName="user_id")
-    },
-    inverseJoinColumns = {
-            @JoinColumn(name="room_id", referencedColumnName = "room_id")
-    })
+    joinColumns =
+            @JoinColumn(name="user_id"),
+    inverseJoinColumns =
+            @JoinColumn(name="room_id")
+    )
     private Set<Room> rooms = new HashSet<>();
 
 }

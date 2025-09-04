@@ -21,10 +21,20 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room createRoom(Long creatorId, Room room) {
+        if (room.getId() != null){
+            throw new IllegalStateException("Room id must be null to create room");
+        }
+
         User creator = userRepository.findById(creatorId).orElse(null);
         if (creator == null){
             throw new IllegalArgumentException("Creation of room failed: no user found with id: " + creatorId);
         }
+
+        Set<Room> rooms = creator.getRooms();
+        rooms.add(room);
+        creator.setRooms(rooms);
+        userRepository.save(creator);
+
         room.setCreator(creator);
         Set<User> users = new HashSet<>();
         users.add(creator);
@@ -61,9 +71,16 @@ public class RoomServiceImpl implements RoomService {
             }
         }
 
-        Set<User> members = repoRoom.getMembers();
+        Set<User> members;
+        members = repoRoom.getMembers();
         members.add(member);
         repoRoom.setMembers(members);
+
+
+        Set<Room> rooms = member.getRooms();
+        rooms.add(repoRoom);
+        member.setRooms(rooms);
+        userRepository.save(member);
 
         return roomRepository.save(repoRoom);
 
@@ -92,6 +109,11 @@ public class RoomServiceImpl implements RoomService {
         if (toBeRemoved == null){
             throw new IllegalArgumentException("Member not found");
         }
+
+        Set<Room> rooms = member.getRooms();
+        rooms.remove(repoRoom);
+        member.setRooms(rooms);
+        userRepository.save(member);
 
         Set<User> members = repoRoom.getMembers();
         members.remove(member);

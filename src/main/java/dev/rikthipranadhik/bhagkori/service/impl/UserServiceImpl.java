@@ -21,6 +21,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createAccount(User user) {
+        if (user.getId() != null) {
+            throw new IllegalStateException("User id must be null to create account");
+        }
+
         return userRepository.save(user);
     }
 
