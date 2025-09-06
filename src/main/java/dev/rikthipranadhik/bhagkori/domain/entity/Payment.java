@@ -16,11 +16,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="payment_id")
     private Long id;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Room room;
 
     @Column(name="payment_time")
     private LocalDateTime paymentTime;

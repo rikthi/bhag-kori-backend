@@ -1,5 +1,6 @@
 package dev.rikthipranadhik.bhagkori.domain.entity;
 
+import dev.rikthipranadhik.bhagkori.domain.enums.SplitStrategyType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="expenses")
@@ -39,5 +42,6 @@ public class Expense {
     @Column(name="expense_amount")
     private BigDecimal amount;
 
-
+    @Column(name= "split_type")
+    private SplitStrategyType splitType;
 }

@@ -2,6 +2,7 @@ package dev.rikthipranadhik.bhagkori.domain.mapper.impl;
 
 import dev.rikthipranadhik.bhagkori.domain.dto.PaymentDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.Payment;
+import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
 import dev.rikthipranadhik.bhagkori.domain.mapper.PaymentMapper;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ public class PaymentMapperImpl implements PaymentMapper {
     public PaymentDto toDto(Payment payment) {
         return new PaymentDto(
                 payment.getId(),
+                payment.getRoom().getId(),
                 payment.getPaymentTime(),
                 payment.getPayer().getId(),
                 payment.getPayee().getId(),
@@ -23,6 +25,7 @@ public class PaymentMapperImpl implements PaymentMapper {
     public Payment fromDto(PaymentDto paymentDto) {
         return new Payment(
                 paymentDto.id(),
+                new Room(),
                 paymentDto.paymentTime(),
                 new User(),
                 new User(),

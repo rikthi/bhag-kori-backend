@@ -4,6 +4,7 @@ import dev.rikthipranadhik.bhagkori.domain.dto.ExpenseDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.Expense;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
+import dev.rikthipranadhik.bhagkori.domain.enums.SplitStrategyType;
 import dev.rikthipranadhik.bhagkori.domain.mapper.ExpenseMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,8 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 expenseDto.createTime(),
                 new User(),
                 new Room(),
-                expenseDto.amount()
+                expenseDto.amount(),
+                SplitStrategyType.valueOf(expenseDto.splitType())
         );
     }
 
@@ -30,7 +32,8 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 expense.getCreateTime(),
                 expense.getPayer().getId(),
                 expense.getRoom().getId(),
-                expense.getAmount()
+                expense.getAmount(),
+                expense.getSplitType().toString()
         );
     }
 }
