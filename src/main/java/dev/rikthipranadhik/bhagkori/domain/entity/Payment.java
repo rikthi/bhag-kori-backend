@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="payments")
@@ -20,6 +21,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="payment_id")
     private Long id;
+
+    @Column(name="payment_time")
+    private LocalDateTime paymentTime;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="payment_payer_id", nullable=false)

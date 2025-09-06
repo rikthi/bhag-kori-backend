@@ -17,7 +17,8 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 expenseDto.name(),
                 expenseDto.createTime(),
                 new User(),
-                new Room()
+                new Room(),
+                expenseDto.amount()
         );
     }
 
@@ -28,7 +29,8 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 expense.getName(),
                 expense.getCreateTime(),
                 expense.getPayer().getId(),
-                expense.getRoom().getId()
+                expense.getRoom().getId(),
+                expense.getAmount()
         );
     }
 }

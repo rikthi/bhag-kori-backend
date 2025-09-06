@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,12 +29,15 @@ public class Expense {
     private LocalDateTime createTime;
 
     @ManyToOne
-    @JoinColumn(name="expense_payer_id", nullable=false)
+    @JoinColumn(name="expense_payer_id")
     private User payer;
 
     @ManyToOne
-    @JoinColumn(name="expense_room_id", nullable=false)
+    @JoinColumn(name="expense_room_id")
     private Room room;
+
+    @Column(name="expense_amount")
+    private BigDecimal amount;
 
 
 }

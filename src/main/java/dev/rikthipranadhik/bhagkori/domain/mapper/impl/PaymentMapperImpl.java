@@ -12,6 +12,7 @@ public class PaymentMapperImpl implements PaymentMapper {
     public PaymentDto toDto(Payment payment) {
         return new PaymentDto(
                 payment.getId(),
+                payment.getPaymentTime(),
                 payment.getPayer().getId(),
                 payment.getPayee().getId(),
                 payment.getAmount()
@@ -22,6 +23,7 @@ public class PaymentMapperImpl implements PaymentMapper {
     public Payment fromDto(PaymentDto paymentDto) {
         return new Payment(
                 paymentDto.id(),
+                paymentDto.paymentTime(),
                 new User(),
                 new User(),
                 paymentDto.amount()
