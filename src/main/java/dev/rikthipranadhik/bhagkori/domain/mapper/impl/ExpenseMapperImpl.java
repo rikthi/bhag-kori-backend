@@ -6,6 +6,7 @@ import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
 import dev.rikthipranadhik.bhagkori.domain.enums.SplitStrategyType;
 import dev.rikthipranadhik.bhagkori.domain.mapper.ExpenseMapper;
+import dev.rikthipranadhik.bhagkori.domain.requests.ExpenseCreateRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +21,20 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 new User(),
                 new Room(),
                 expenseDto.amount(),
-                SplitStrategyType.valueOf(expenseDto.splitType())
+                SplitStrategyType.valueOf(expenseDto.splitType().toUpperCase())
+        );
+    }
+
+    @Override
+    public Expense fromRequest(ExpenseCreateRequest expenseCreateRequest) {
+        return new Expense(
+                expenseCreateRequest.id(),
+                expenseCreateRequest.name(),
+                expenseCreateRequest.createTime(),
+                new User(),
+                new Room(),
+                expenseCreateRequest.amount(),
+                SplitStrategyType.valueOf(expenseCreateRequest.splitType())
         );
     }
 
@@ -33,7 +47,9 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 expense.getPayer().getId(),
                 expense.getRoom().getId(),
                 expense.getAmount(),
-                expense.getSplitType().toString()
+                expense.getSplitType().toString().toUpperCase()
         );
     }
+
+
 }
