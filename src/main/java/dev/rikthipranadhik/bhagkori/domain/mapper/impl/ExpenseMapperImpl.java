@@ -34,7 +34,7 @@ public class ExpenseMapperImpl implements ExpenseMapper {
                 new User(),
                 new Room(),
                 expenseCreateRequest.amount(),
-                SplitStrategyType.valueOf(expenseCreateRequest.splitType())
+                SplitStrategyType.valueOf(expenseCreateRequest.splitType().toUpperCase())
         );
     }
 
