@@ -11,6 +11,7 @@ public interface ExpenseService {
     Expense updateExpense(Expense expense);
     void deleteExpense(Long expenseId);
     List<Expense> getAllExpenses(Long roomId);
+    Expense getExpenseById(Long expenseId);
     List<Expense> getExpensesByPayer(Long payerId);
 
 }

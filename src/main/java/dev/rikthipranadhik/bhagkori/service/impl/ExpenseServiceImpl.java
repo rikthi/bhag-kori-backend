@@ -70,12 +70,25 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void deleteExpense(Long expenseId) {
+        Expense expense = expenseRepository.findById(expenseId).orElse(null);
+
+        if (expense == null){
+            throw new IllegalArgumentException("Expense couldn't be found");
+        }
+
+        List<Share> shares = shareRepository.findByExpenseId(expenseId);
+        shareRepository.deleteAll(shares);
         expenseRepository.deleteById(expenseId);
     }
 
     @Override
     public List<Expense> getAllExpenses(Long roomId) {
         return expenseRepository.findByRoomId(roomId);
+    }
+
+    @Override
+    public Expense getExpenseById(Long expenseId) {
+        return expenseRepository.findById(expenseId).orElse(null);
     }
 
     @Override

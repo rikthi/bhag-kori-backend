@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,4 +32,34 @@ public class ExpenseController {
 
         return ResponseEntity.ok(expenseMapper.toDto(expenseService.createExpense(roomId, payerId, expense, userSplits)));
     }
+
+    @DeleteMapping("/delete/{expenseId}")
+    public ResponseEntity<String> deleteExpense(@PathVariable Long expenseId){
+        expenseService.deleteExpense(expenseId);
+        return ResponseEntity.ok("Expense has been deleted");
+    }
+
+    @GetMapping("/get/byRoom/{roomId}")
+    public ResponseEntity<List<ExpenseDto>> getAllExpensesByRoom(@PathVariable Long roomId){
+        return ResponseEntity.ok(
+                expenseService.getAllExpenses(roomId)
+                        .stream()
+                        .map(expenseMapper::toDto)
+                        .toList()
+        );
+    }
+
+    @GetMapping("/get/byExpense/{expenseId}")
+    public ResponseEntity<ExpenseDto> getExpense(@PathVariable Long expenseId){
+        return ResponseEntity.ok(expenseMapper.toDto(expenseService.getExpenseById(expenseId)));
+    }
+
+    @GetMapping("get/byPayer/{payerId}")
+    public ResponseEntity<List<ExpenseDto>> getAllExpensesByPayer(@PathVariable Long payerId){
+        return ResponseEntity.ok(expenseService.getExpensesByPayer(payerId)
+                .stream()
+                .map(expenseMapper::toDto)
+                .toList());
+    }
+
 }
