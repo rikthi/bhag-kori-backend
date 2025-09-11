@@ -38,9 +38,10 @@ public class RoomController {
         return ResponseEntity.ok(roomMapper.toDto(roomService.removeMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
     }
 
-    public ResponseEntity<List<UserAndShare>> getUserTrades()
-    {
-        return null;
+    @GetMapping("/get/{roomId}/userShares/{userId}")
+    public ResponseEntity<List<UserAndShare>> getUserTotalShares(@PathVariable Long roomId, @PathVariable Long userId){
+
     }
+
 
 }

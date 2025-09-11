@@ -1,15 +1,17 @@
 package dev.rikthipranadhik.bhagkori.service.impl;
 
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
+import dev.rikthipranadhik.bhagkori.domain.entity.Share;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
 import dev.rikthipranadhik.bhagkori.repository.RoomRepository;
+import dev.rikthipranadhik.bhagkori.repository.ShareRepository;
 import dev.rikthipranadhik.bhagkori.repository.UserRepository;
 import dev.rikthipranadhik.bhagkori.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +20,7 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final ShareRepository shareRepository;
 
     @Override
     public Room createRoom(Long creatorId, Room room) {
@@ -130,5 +133,38 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return repoRoom.getMembers();
+    }
+
+    @Override
+    public HashMap<String, BigDecimal> getUserTotals(Long roomId, Long memberId) {
+        Room room = roomRepository.findById(roomId).orElse(null);
+        User member = userRepository.findById(memberId).orElse(null);
+
+        if (room == null || member == null){
+            throw new IllegalArgumentException("Room or member not found");
+        }
+
+
+        List<Share> creditedShares = shareRepository.findByCreditor_IdAndExpense_Room_Id(memberId, roomId);
+        List<Share>
+
+        for (User u : room.getMembers()) {
+            if (u.getId().equals(memberId)) {
+                continue;
+            }
+
+            List<Share> sharesCreditedToMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(memberId, u.getId(), roomId);
+            BigDecimal totalCreditedAmount = sharesCreditedToMember.stream()
+                    .map(Share :: getAmount)
+                    .filter(Objects:: nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            List<Share> sharesInDebtFromMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(u.getId(), memberId, roomId);
+            BigDecimal totalInDebtAmount = sharesInDebtFromMember.stream()
+                    .map(Share :: getAmount)
+                    .filter(Objects:: nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        }
     }
 }

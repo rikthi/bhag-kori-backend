@@ -3,6 +3,9 @@ package dev.rikthipranadhik.bhagkori.service;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public interface RoomService {
@@ -12,4 +15,5 @@ public interface RoomService {
     Room addMember(Long roomId, Long memberId);
     Room removeMember(Long roomId, Long memberId);
     Set<User> getMembers(Room room);
+    HashMap<String, BigDecimal> getUserTotals(Long roomId, Long memberId);
 }
