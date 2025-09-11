@@ -7,10 +7,10 @@ import java.util.List;
 public interface UserService {
     User createAccount(User user);
     User login(User user);
-    void deleteAccount(User user);
+    void deleteAccount(Long userId);
     // User blockUser(User blocker, User blocked);
     User findByEmail(String email);
     User findByPhoneNumber(String phoneNumber);
     List<User> getAllUsers();
-    User updateAccount(Long id, User newUser);
+    User updateAccount(User newUser);
 }

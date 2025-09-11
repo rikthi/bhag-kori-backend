@@ -4,10 +4,13 @@ import dev.rikthipranadhik.bhagkori.domain.dto.RoomDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.mapper.RoomMapper;
 import dev.rikthipranadhik.bhagkori.domain.requests.MemberAddToRoomRequest;
+import dev.rikthipranadhik.bhagkori.domain.responses.UserAndShare;
 import dev.rikthipranadhik.bhagkori.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -33,6 +36,11 @@ public class RoomController {
     @DeleteMapping("remove/member")
     public ResponseEntity<RoomDto> removeMember(@RequestBody MemberAddToRoomRequest memberAddToRoomRequest){
         return ResponseEntity.ok(roomMapper.toDto(roomService.removeMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
+    }
+
+    public ResponseEntity<List<UserAndShare>> getUserTrades()
+    {
+        return null;
     }
 
 }

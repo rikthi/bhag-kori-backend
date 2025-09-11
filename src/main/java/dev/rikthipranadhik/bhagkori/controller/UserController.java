@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping(path="api/v1/user")
@@ -23,4 +25,14 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toDto(userService.createAccount(userMapper.fromDto(userDto))));
     }
 
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userService.deleteAccount(userId);
+        return ResponseEntity.ok("User Deleted");
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userMapper.toDto(userService.updateAccount(userMapper.fromDto(userDto))));
+    }
 }
