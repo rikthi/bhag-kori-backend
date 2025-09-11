@@ -144,10 +144,7 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("Room or member not found");
         }
 
-
-        List<Share> creditedShares = shareRepository.findByCreditor_IdAndExpense_Room_Id(memberId, roomId);
-        List<Share>
-
+        HashMap<String, BigDecimal> userTotals= new HashMap<>();
         for (User u : room.getMembers()) {
             if (u.getId().equals(memberId)) {
                 continue;
@@ -165,6 +162,12 @@ public class RoomServiceImpl implements RoomService {
                     .filter(Objects:: nonNull)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            // TODO: INCLUDE PAYMENT ADJUSTMENTS
+
+
+            userTotals.put(u.getName(), totalInDebtAmount.subtract(totalCreditedAmount));
         }
+
+        return userTotals;
     }
 }

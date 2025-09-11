@@ -3,9 +3,11 @@ package dev.rikthipranadhik.bhagkori.controller;
 import dev.rikthipranadhik.bhagkori.domain.dto.RoomDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.mapper.RoomMapper;
+import dev.rikthipranadhik.bhagkori.domain.mapper.UserShareMapper;
 import dev.rikthipranadhik.bhagkori.domain.requests.MemberAddToRoomRequest;
 import dev.rikthipranadhik.bhagkori.domain.responses.UserAndShare;
 import dev.rikthipranadhik.bhagkori.service.RoomService;
+import dev.rikthipranadhik.bhagkori.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import java.util.List;
 public class RoomController {
     private final RoomService roomService;
     private final RoomMapper roomMapper;
+    private final UserShareMapper userShareMapper;
 
     @PostMapping("/create")
     public ResponseEntity<RoomDto> createRoom(@RequestBody RoomDto roomDto){
@@ -40,7 +43,7 @@ public class RoomController {
 
     @GetMapping("/get/{roomId}/userShares/{userId}")
     public ResponseEntity<List<UserAndShare>> getUserTotalShares(@PathVariable Long roomId, @PathVariable Long userId){
-
+        return ResponseEntity.ok(userShareMapper.toUserAndShare(roomService.getUserTotals(roomId, userId)));
     }
 
 
