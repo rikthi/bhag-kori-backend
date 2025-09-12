@@ -20,7 +20,10 @@ public class PaymentController {
 
     @PostMapping("/create")
     public ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto paymentDto) {
-        return null;
+        Long roomId = paymentDto.roomId();
+        Long payerId = paymentDto.payerId();
+        Long payeeId = paymentDto.payeeId();
+        return ResponseEntity.ok(paymentMapper.toDto(paymentService.createPayment(roomId, payerId, payeeId, paymentMapper.fromDto(paymentDto))));
     }
 
 }
