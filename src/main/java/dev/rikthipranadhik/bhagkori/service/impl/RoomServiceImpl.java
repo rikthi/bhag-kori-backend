@@ -36,13 +36,14 @@ public class RoomServiceImpl implements RoomService {
         Set<Room> rooms = creator.getRooms();
         rooms.add(room);
         creator.setRooms(rooms);
-        userRepository.save(creator);
 
         room.setCreator(creator);
         Set<User> users = new HashSet<>();
         users.add(creator);
         room.setMembers(users);
-        return roomRepository.save(room);
+        Room finalRoom = roomRepository.save(room);
+        userRepository.save(creator);
+        return finalRoom;
     }
 
     @Override
