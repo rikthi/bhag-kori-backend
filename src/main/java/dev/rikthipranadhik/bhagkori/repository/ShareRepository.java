@@ -2,9 +2,11 @@ package dev.rikthipranadhik.bhagkori.repository;
 
 import dev.rikthipranadhik.bhagkori.domain.entity.Share;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ShareRepository extends JpaRepository<Share,Long> {
 
     List<Share> findByExpenseId(Long expenseId);

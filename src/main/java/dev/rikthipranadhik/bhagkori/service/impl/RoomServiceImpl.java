@@ -1,8 +1,10 @@
 package dev.rikthipranadhik.bhagkori.service.impl;
 
+import dev.rikthipranadhik.bhagkori.domain.entity.Payment;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.entity.Share;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
+import dev.rikthipranadhik.bhagkori.repository.PaymentRepository;
 import dev.rikthipranadhik.bhagkori.repository.RoomRepository;
 import dev.rikthipranadhik.bhagkori.repository.ShareRepository;
 import dev.rikthipranadhik.bhagkori.repository.UserRepository;
@@ -21,6 +23,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final ShareRepository shareRepository;
+    private final PaymentRepository paymentRepository;
 
     @Override
     public Room createRoom(Long creatorId, Room room) {
@@ -151,24 +154,42 @@ public class RoomServiceImpl implements RoomService {
                 continue;
             }
 
-            List<Share> sharesCreditedToMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(memberId, u.getId(), roomId);
-            BigDecimal totalCreditedAmount = sharesCreditedToMember.stream()
-                    .map(Share :: getAmount)
-                    .filter(Objects:: nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            List<Share> sharesInDebtFromMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(u.getId(), memberId, roomId);
-            BigDecimal totalInDebtAmount = sharesInDebtFromMember.stream()
-                    .map(Share :: getAmount)
-                    .filter(Objects:: nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            // TODO: INCLUDE PAYMENT ADJUSTMENTS
+            BigDecimal total = getIndividualTotal(roomId, memberId, u);
 
 
-            userTotals.put(u.getName(), totalInDebtAmount.subtract(totalCreditedAmount));
+            userTotals.put(u.getName(), total);
         }
 
         return userTotals;
+    }
+
+    private BigDecimal getIndividualTotal(Long roomId, Long memberId, User u) {
+        List<Share> sharesCreditedToMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(memberId, u.getId(), roomId);
+        BigDecimal totalCreditedAmount = sharesCreditedToMember.stream()
+                .map(Share :: getAmount)
+                .filter(Objects:: nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        List<Share> sharesInDebtFromMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(u.getId(), memberId, roomId);
+        BigDecimal totalInDebtAmount = sharesInDebtFromMember.stream()
+                .map(Share :: getAmount)
+                .filter(Objects:: nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        List<Payment> paymentsGivenToMember = paymentRepository.findByPayerIdAndPayeeIdAndRoomId(u.getId(), memberId, roomId);
+        BigDecimal totalPaidAmount = paymentsGivenToMember.stream()
+                .map(Payment :: getAmount)
+                .filter(Objects :: nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        List<Payment> paymentsGivenFromMember = paymentRepository.findByPayerIdAndPayeeIdAndRoomId(memberId, u.getId(), roomId);
+        BigDecimal totalReceivedAmount = paymentsGivenFromMember.stream()
+                .map(Payment :: getAmount)
+                .filter(Objects :: nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal memberCredit = totalInDebtAmount.add(totalReceivedAmount);
+        BigDecimal memberDebt = totalCreditedAmount.add(totalPaidAmount);
+        return memberDebt.subtract(memberCredit);
     }
 }
