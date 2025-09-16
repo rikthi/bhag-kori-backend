@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/payment")
 @CrossOrigin("*")
@@ -26,4 +28,27 @@ public class PaymentController {
         return ResponseEntity.ok(paymentMapper.toDto(paymentService.createPayment(roomId, payerId, payeeId, paymentMapper.fromDto(paymentDto))));
     }
 
+    @GetMapping("/get/byPayer/{userId}")
+    public ResponseEntity<List<PaymentDto>> getPaymentsByPayer(@PathVariable Long userId) {
+        return ResponseEntity.ok(paymentService.getPaymentsByPayerId(userId)
+                .stream()
+                .map(paymentMapper :: toDto)
+                .toList()
+        );
+    }
+
+    @GetMapping("/get/byRoom/{roomId}")
+    public ResponseEntity<List<PaymentDto>> getPaymentsByRoom(@PathVariable Long roomId) {
+        return ResponseEntity.ok(paymentService.getPaymentsByRoomId(roomId)
+                .stream()
+                .map(paymentMapper :: toDto)
+                .toList()
+        );
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deletePayment(@PathVariable Long id){
+        paymentService.deletePayment(id);
+        return ResponseEntity.ok().body("Payment deleted successfully");
+    }
 }
