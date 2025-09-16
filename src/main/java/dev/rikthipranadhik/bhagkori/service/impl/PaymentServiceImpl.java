@@ -10,6 +10,7 @@ import dev.rikthipranadhik.bhagkori.service.PaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -40,22 +41,22 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment getPaymentById(Long id) {
-        return null;
+        return paymentRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Payment not found"));
     }
 
     @Override
-    public Payment getPaymentsByRoomId(Long roomId) {
-        return null;
+    public List<Payment> getPaymentsByRoomId(Long roomId) {
+        return paymentRepository.findByRoomId(roomId);
     }
 
     @Override
-    public Payment getPaymentsByPayerId(Long payerId) {
-        return null;
+    public List<Payment> getPaymentsByPayerId(Long payerId) {
+        return paymentRepository.findByPayerId(payerId);
     }
 
     @Override
-    public Payment getPaymentsByPayeeId(Long payeeId) {
-        return null;
+    public List<Payment> getPaymentsByPayeeId(Long payeeId) {
+        return paymentRepository.findByPayeeId(payeeId);
     }
 
     @Override
@@ -65,6 +66,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void deletePayment(Long id) {
-
+        paymentRepository.deleteById(id);
     }
 }
