@@ -190,6 +190,6 @@ public class RoomServiceImpl implements RoomService {
 
         BigDecimal memberCredit = totalInDebtAmount.add(totalReceivedAmount);
         BigDecimal memberDebt = totalCreditedAmount.add(totalPaidAmount);
-        return memberDebt.subtract(memberCredit);
+        return memberCredit.subtract(memberDebt);
     }
 }
