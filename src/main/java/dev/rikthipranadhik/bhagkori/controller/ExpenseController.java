@@ -39,6 +39,12 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseMapper.toDto(expenseService.createExpense(roomId, payerId, expense, userSplits)));
     }
 
+    /**
+     * Returns the total share of a user for an expense
+     * @param expenseId Expense ID
+     * @param userId User ID
+     * @return A decimal value representing the share of the user for the expense
+     */
     @GetMapping("get/{expenseId}/user/{userId}/share")
     public ResponseEntity<BigDecimal> getUserShare(@PathVariable Long expenseId, @PathVariable Long userId){
         return ResponseEntity.ok(expenseService.getExpenseShareByUserId(expenseId, userId));
@@ -60,6 +66,11 @@ public class ExpenseController {
         );
     }
 
+    /**
+     * Returns all the splits for members of an expense
+     * @param expenseId Expense ID
+     * @return A list of splits with the username and amount of the split
+     */
     @GetMapping("/get/{expenseId}/splits")
     public ResponseEntity<List<Splits>> getAllSplitsByExpense(@PathVariable Long expenseId){
         Map<User, BigDecimal> splits = expenseService.getSplitsByExpenseId(expenseId);

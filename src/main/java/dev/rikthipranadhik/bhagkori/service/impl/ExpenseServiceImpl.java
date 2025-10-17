@@ -104,7 +104,8 @@ public class ExpenseServiceImpl implements ExpenseService {
         for (Share share : shares) {
             if (Objects.equals(share.getCreditor().getId(), userId)){
                 total = total.add(share.getAmount());
-            } else if (Objects.equals(share.getDebtor().getId(), userId)){
+            }
+            if (Objects.equals(share.getDebtor().getId(), userId)){
                 total = total.subtract(share.getAmount());
             }
         }
