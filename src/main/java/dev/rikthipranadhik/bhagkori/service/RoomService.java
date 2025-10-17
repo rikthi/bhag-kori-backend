@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 public interface RoomService {
+    Room getRoomById(Long roomId);
     Room createRoom(Long creatorId, Room room);
     Room updateRoom(Room room);
     void deleteRoom(Room room);

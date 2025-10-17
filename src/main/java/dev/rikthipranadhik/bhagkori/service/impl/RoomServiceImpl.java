@@ -26,6 +26,11 @@ public class RoomServiceImpl implements RoomService {
     private final PaymentRepository paymentRepository;
 
     @Override
+    public Room getRoomById(Long roomId) {
+        return roomRepository.findById(roomId).orElse(null);
+    }
+
+    @Override
     public Room createRoom(Long creatorId, Room room) {
         if (room.getId() != null){
             throw new IllegalStateException("Room id must be null to create room");

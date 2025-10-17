@@ -44,6 +44,11 @@ public class RoomController {
         return ResponseEntity.ok(roomMapper.toDto(roomService.createRoom(creatorId, room)));
     }
 
+    @GetMapping("get/{roomId}")
+    public ResponseEntity<RoomDto> getRoom(@PathVariable Long roomId){
+        return ResponseEntity.ok(roomMapper.toDto(roomService.getRoomById(roomId)));
+    }
+
     @PostMapping("/add/member")
     public ResponseEntity<RoomDto> addMember(@RequestBody MemberAddToRoomRequest memberAddToRoomRequest){
         return ResponseEntity.ok(roomMapper.toDto(roomService.addMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
