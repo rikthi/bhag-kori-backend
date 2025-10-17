@@ -2,6 +2,7 @@ package dev.rikthipranadhik.bhagkori.service.impl;
 
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
+import dev.rikthipranadhik.bhagkori.domain.requests.LoginRequest;
 import dev.rikthipranadhik.bhagkori.repository.RoomRepository;
 import dev.rikthipranadhik.bhagkori.repository.UserRepository;
 import dev.rikthipranadhik.bhagkori.service.UserService;
@@ -29,8 +30,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(User user) {
-        return null;
+    public User login(LoginRequest loginRequest) {
+        if (loginRequest.email() == null || loginRequest.password() == null) {
+            throw new IllegalArgumentException("Email and password must be provided");
+        }
+
+        User user = userRepository.findByEmail(loginRequest.email());
+        if (user == null || !user.getPassword().equals(loginRequest.password())) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+        return user;
     }
 
     @Override
