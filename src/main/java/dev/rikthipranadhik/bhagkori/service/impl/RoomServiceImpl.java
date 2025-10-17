@@ -50,6 +50,30 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room createNewRoom(Long creatorId, Room room, Set<String> emails) {
+        createRoom(creatorId, room);
+        for (String email : emails) {
+            User user = userRepository.findByEmail(email);
+            if (user == null){
+                System.out.println("User not found with email: " + email);
+                continue;
+            }
+            addMember(room.getId(), user.getId());
+        }
+        return roomRepository.findById(room.getId()).orElse(null);
+    }
+
+    @Override
+    public Set<Room> getByUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null){
+            throw new IllegalArgumentException("User not found");
+        }
+
+        return user.getRooms();
+    }
+
+    @Override
     public Room updateRoom(Room room) {
         return null;
     }
@@ -162,6 +186,8 @@ public class RoomServiceImpl implements RoomService {
 
         return userTotals;
     }
+
+
 
     private BigDecimal getIndividualTotal(Long roomId, Long memberId, User u) {
         List<Share> sharesCreditedToMember = shareRepository.findByDebtorIdAndCreditorIdAndExpense_Room_Id(memberId, u.getId(), roomId);

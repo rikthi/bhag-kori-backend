@@ -3,6 +3,7 @@ package dev.rikthipranadhik.bhagkori.controller;
 import dev.rikthipranadhik.bhagkori.domain.dto.UserDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.User;
 import dev.rikthipranadhik.bhagkori.domain.mapper.UserMapper;
+import dev.rikthipranadhik.bhagkori.domain.requests.LoginRequest;
 import dev.rikthipranadhik.bhagkori.service.RoomService;
 import dev.rikthipranadhik.bhagkori.service.UserService;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,18 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@RequestBody LoginRequest loginRequest) throws IllegalArgumentException{
+        UserDto response;
+        try {
+            response = userMapper.toDto(userService.login(loginRequest));
+        } catch (IllegalArgumentException illegalArgumentException){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
