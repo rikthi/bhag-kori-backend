@@ -28,7 +28,7 @@ public class PaymentController {
         return ResponseEntity.ok(paymentMapper.toDto(paymentService.createPayment(roomId, payerId, payeeId, paymentMapper.fromDto(paymentDto))));
     }
 
-    @GetMapping("/get/byPayer/{userId}")
+    @GetMapping("/get/payer/{userId}")
     public ResponseEntity<List<PaymentDto>> getPaymentsByPayer(@PathVariable Long userId) {
         return ResponseEntity.ok(paymentService.getPaymentsByPayerId(userId)
                 .stream()
@@ -37,7 +37,7 @@ public class PaymentController {
         );
     }
 
-    @GetMapping("/get/byRoom/{roomId}")
+    @GetMapping("/get/room/{roomId}")
     public ResponseEntity<List<PaymentDto>> getPaymentsByRoom(@PathVariable Long roomId) {
         return ResponseEntity.ok(paymentService.getPaymentsByRoomId(roomId)
                 .stream()

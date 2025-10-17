@@ -243,4 +243,45 @@ public class RoomServiceImpl implements RoomService {
 
         return balance;
     }
+
+    @Override
+    public Set<User> getMembersByRoomId(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElse(null);
+        if (room == null){
+            throw new IllegalArgumentException("Room not found");
+        }
+
+        return room.getMembers();
+    }
+
+    @Override
+    public Room addMemberByEmail(Long roomId, String email) {
+        Room repoRoom = roomRepository.findById(roomId).orElse(null);
+        if (repoRoom == null){
+            throw new IllegalArgumentException("Room not found");
+        }
+
+
+        User member = userRepository.findByEmail(email);
+
+        if (member == null){
+            throw new IllegalArgumentException("Member not found");
+        }
+
+        if (repoRoom.getMembers().contains(member)){
+            throw new IllegalArgumentException("Member already exists");
+        }
+
+        Set<User> members = repoRoom.getMembers();
+        members.add(member);
+        repoRoom.setMembers(members);
+
+
+        Set<Room> rooms = member.getRooms();
+        rooms.add(repoRoom);
+        member.setRooms(rooms);
+        userRepository.save(member);
+
+        return roomRepository.save(repoRoom);
+    }
 }

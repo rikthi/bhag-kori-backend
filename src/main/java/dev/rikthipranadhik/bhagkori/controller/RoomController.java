@@ -1,15 +1,19 @@
 package dev.rikthipranadhik.bhagkori.controller;
 
 import dev.rikthipranadhik.bhagkori.domain.dto.RoomDto;
+import dev.rikthipranadhik.bhagkori.domain.dto.UserDto;
 import dev.rikthipranadhik.bhagkori.domain.entity.Room;
 import dev.rikthipranadhik.bhagkori.domain.mapper.RoomMapper;
+import dev.rikthipranadhik.bhagkori.domain.mapper.UserMapper;
 import dev.rikthipranadhik.bhagkori.domain.mapper.UserShareMapper;
+import dev.rikthipranadhik.bhagkori.domain.mapper.impl.UserMapperImpl;
 import dev.rikthipranadhik.bhagkori.domain.requests.MemberAddToRoomRequest;
 import dev.rikthipranadhik.bhagkori.domain.requests.RoomCreateRequest;
 import dev.rikthipranadhik.bhagkori.domain.responses.UserAndShare;
 import dev.rikthipranadhik.bhagkori.service.RoomService;
 import dev.rikthipranadhik.bhagkori.service.UserService;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +29,7 @@ public class RoomController {
     private final RoomService roomService;
     private final RoomMapper roomMapper;
     private final UserShareMapper userShareMapper;
+    private final UserMapper userMapper;
 
 
     @PostMapping("/create/new")
@@ -54,6 +59,11 @@ public class RoomController {
         return ResponseEntity.ok(roomMapper.toDto(roomService.addMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
     }
 
+    @PostMapping("/add/{roomId}/member/email/{email}")
+    public ResponseEntity<RoomDto> addMemberByEmail(@PathVariable String email, @PathVariable Long roomId){
+        return ResponseEntity.ok(roomMapper.toDto(roomService.addMemberByEmail(roomId, email)));
+    }
+
     @DeleteMapping("remove/member")
     public ResponseEntity<RoomDto> removeMember(@RequestBody MemberAddToRoomRequest memberAddToRoomRequest){
         return ResponseEntity.ok(roomMapper.toDto(roomService.removeMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
@@ -70,8 +80,16 @@ public class RoomController {
     }
 
     @GetMapping("/get/user/{userId}")
-    public ResponseEntity<List<RoomDto>> getUserRooms(@PathVariable Long userId){
+    public ResponseEntity<List<RoomDto>> getUserRooms(@PathVariable Long userId) {
         return ResponseEntity.ok(roomService.getByUser(userId).stream().map(roomMapper::toDto).toList());
+    }
+
+    @GetMapping("get/{roomId}/users")
+    public ResponseEntity<List<UserDto>> getUsersByRoom(@PathVariable Long roomId) {
+        return ResponseEntity.ok(roomService.getMembersByRoomId(roomId)
+                .stream()
+                .map(userMapper::toDtoSecure)
+                .toList());
     }
 
 

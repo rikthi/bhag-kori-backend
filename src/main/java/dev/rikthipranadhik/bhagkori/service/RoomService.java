@@ -21,4 +21,6 @@ public interface RoomService {
     Room createNewRoom(Long creatorId, Room room, Set<String> emails);
     Set<Room> getByUser(Long userId);
     BigDecimal getUserBalance(Long roomId, Long userId);
+    Set<User> getMembersByRoomId(Long roomId);
+    Room addMemberByEmail(Long roomId, String email);
 }
