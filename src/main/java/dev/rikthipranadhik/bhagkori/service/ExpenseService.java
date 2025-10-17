@@ -1,8 +1,10 @@
 package dev.rikthipranadhik.bhagkori.service;
 
 import dev.rikthipranadhik.bhagkori.domain.entity.Expense;
+import dev.rikthipranadhik.bhagkori.domain.entity.User;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,5 +15,6 @@ public interface ExpenseService {
     List<Expense> getAllExpenses(Long roomId);
     Expense getExpenseById(Long expenseId);
     List<Expense> getExpensesByPayer(Long payerId);
-
-}
+    BigDecimal getExpenseShareByUserId(Long expenseId, Long userId);
+    HashMap<User, BigDecimal> getSplitsByExpenseId(Long expenseId);
+ }

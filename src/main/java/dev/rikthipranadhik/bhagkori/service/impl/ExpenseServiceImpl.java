@@ -15,8 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -94,5 +93,42 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<Expense> getExpensesByPayer(Long payerId) {
         return expenseRepository.findByPayerId(payerId);
+    }
+
+    @Override
+    public BigDecimal getExpenseShareByUserId(Long expenseId, Long userId) {
+        List<Share> shares = shareRepository.findByExpenseId(expenseId);
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Share share : shares) {
+            if (Objects.equals(share.getCreditor().getId(), userId)){
+                total = total.add(share.getAmount());
+            } else if (Objects.equals(share.getDebtor().getId(), userId)){
+                total = total.subtract(share.getAmount());
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    public HashMap<User, BigDecimal> getSplitsByExpenseId(Long expenseId) {
+        List<Share> shares = shareRepository.findByExpenseId(expenseId);
+
+        HashMap<User, BigDecimal> splits = new HashMap<>();
+
+        for (Share share : shares) {
+            if (!splits.containsKey(share.getCreditor())){
+                splits.put(share.getCreditor(), BigDecimal.ZERO);
+            }
+            splits.put(share.getCreditor(), splits.get(share.getCreditor()).add(share.getAmount()));
+            if (!splits.containsKey(share.getDebtor())){
+                splits.put(share.getDebtor(), BigDecimal.ZERO);
+            }
+            splits.put(share.getDebtor(), splits.get(share.getDebtor()).subtract(share.getAmount()));
+        }
+
+        return splits;
     }
 }

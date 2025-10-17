@@ -73,6 +73,7 @@ public class RoomServiceImpl implements RoomService {
         return user.getRooms();
     }
 
+
     @Override
     public Room updateRoom(Room room) {
         return null;
@@ -164,7 +165,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public HashMap<String, BigDecimal> getUserTotals(Long roomId, Long memberId) {
+    public HashMap<User, BigDecimal> getUserTotals(Long roomId, Long memberId) {
         Room room = roomRepository.findById(roomId).orElse(null);
         User member = userRepository.findById(memberId).orElse(null);
 
@@ -172,7 +173,7 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("Room or member not found");
         }
 
-        HashMap<String, BigDecimal> userTotals= new HashMap<>();
+        HashMap<User, BigDecimal> userTotals= new HashMap<>();
         for (User u : room.getMembers()) {
             if (u.getId().equals(memberId)) {
                 continue;
@@ -181,7 +182,7 @@ public class RoomServiceImpl implements RoomService {
             BigDecimal total = getIndividualTotal(roomId, memberId, u);
 
 
-            userTotals.put(u.getName(), total);
+            userTotals.put(u, total);
         }
 
         return userTotals;
@@ -217,5 +218,24 @@ public class RoomServiceImpl implements RoomService {
         BigDecimal memberCredit = totalInDebtAmount.add(totalReceivedAmount);
         BigDecimal memberDebt = totalCreditedAmount.add(totalPaidAmount);
         return memberCredit.subtract(memberDebt);
+    }
+
+    @Override
+    public BigDecimal getUserBalance(Long roomId, Long userId) {
+        HashMap<User, BigDecimal> totals = new HashMap<>();
+
+        totals = getUserTotals(roomId, userId);
+
+        if (totals.isEmpty()){
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal balance = BigDecimal.ZERO;
+
+        for (BigDecimal total : totals.values()) {
+            balance = balance.add(total);
+        }
+
+        return balance;
     }
 }

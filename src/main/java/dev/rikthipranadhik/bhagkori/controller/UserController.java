@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<UserDto> login(@RequestBody LoginRequest loginRequest) throws IllegalArgumentException{
         UserDto response;
         try {
-            response = userMapper.toDto(userService.login(loginRequest));
+            response = userMapper.toDtoSecure(userService.login(loginRequest));
         } catch (IllegalArgumentException illegalArgumentException){
             return ResponseEntity.notFound().build();
         }
@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userMapper.toDto(userService.createAccount(userMapper.fromDto(userDto))));
+        return ResponseEntity.ok(userMapper.toDtoSecure(userService.createAccount(userMapper.fromDto(userDto))));
     }
 
     @DeleteMapping("/delete/{userId}")
@@ -46,6 +46,6 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userMapper.toDto(userService.updateAccount(userMapper.fromDto(userDto))));
+        return ResponseEntity.ok(userMapper.toDtoSecure(userService.updateAccount(userMapper.fromDto(userDto))));
     }
 }

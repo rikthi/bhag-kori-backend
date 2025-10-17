@@ -16,7 +16,8 @@ public interface RoomService {
     Room addMember(Long roomId, Long memberId);
     Room removeMember(Long roomId, Long memberId);
     Set<User> getMembers(Room room);
-    HashMap<String, BigDecimal> getUserTotals(Long roomId, Long memberId);
+    HashMap<User, BigDecimal> getUserTotals(Long roomId, Long memberId);
     Room createNewRoom(Long creatorId, Room room, Set<String> emails);
     Set<Room> getByUser(Long userId);
+    BigDecimal getUserBalance(Long roomId, Long userId);
 }

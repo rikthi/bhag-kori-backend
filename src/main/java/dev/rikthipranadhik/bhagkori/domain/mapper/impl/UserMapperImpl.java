@@ -19,6 +19,16 @@ public class UserMapperImpl implements UserMapper{
         );
     }
 
+    public UserDto toDtoSecure(User user){
+        return new UserDto(
+                user.getId(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getName(),
+               null
+        );
+    }
+
     public UserDto toDto(User user) {
         return new UserDto(
                 user.getId(),

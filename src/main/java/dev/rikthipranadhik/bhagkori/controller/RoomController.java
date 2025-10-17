@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -53,12 +54,17 @@ public class RoomController {
         return ResponseEntity.ok(roomMapper.toDto(roomService.removeMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
     }
 
-    @GetMapping("/get/{roomId}/userShares/{userId}")
+    @GetMapping("/get/{roomId}/shares/{userId}")
     public ResponseEntity<List<UserAndShare>> getUserTotalShares(@PathVariable Long roomId, @PathVariable Long userId){
         return ResponseEntity.ok(userShareMapper.toUserAndShare(roomService.getUserTotals(roomId, userId)));
     }
 
-    @GetMapping("/get/userRooms/{userId}")
+    @GetMapping("/get/{roomId}/total/user/{userId}")
+    public ResponseEntity<BigDecimal> getUserBalance(@PathVariable Long roomId, @PathVariable Long userId ){
+        return ResponseEntity.ok(roomService.getUserBalance(roomId, userId));
+    }
+
+    @GetMapping("/get/user/{userId}")
     public ResponseEntity<List<RoomDto>> getUserRooms(@PathVariable Long userId){
         return ResponseEntity.ok(roomService.getByUser(userId).stream().map(roomMapper::toDto).toList());
     }
