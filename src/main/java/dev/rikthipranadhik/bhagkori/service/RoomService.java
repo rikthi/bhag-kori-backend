@@ -14,6 +14,7 @@ public interface RoomService {
     Room createRoom(Long creatorId, Room room);
     Room updateRoom(Room room);
     void deleteRoom(Room room);
+    void deleteRoomById(Long roomId);
     Room addMember(Long roomId, Long memberId);
     Room removeMember(Long roomId, Long memberId);
     Set<User> getMembers(Room room);

@@ -64,10 +64,6 @@ public class RoomController {
         return ResponseEntity.ok(roomMapper.toDto(roomService.addMemberByEmail(roomId, email)));
     }
 
-    @DeleteMapping("remove/member")
-    public ResponseEntity<RoomDto> removeMember(@RequestBody MemberAddToRoomRequest memberAddToRoomRequest){
-        return ResponseEntity.ok(roomMapper.toDto(roomService.removeMember(memberAddToRoomRequest.roomId(), memberAddToRoomRequest.memberId())));
-    }
 
     @GetMapping("/get/{roomId}/shares/{userId}")
     public ResponseEntity<List<UserAndShare>> getUserTotalShares(@PathVariable Long roomId, @PathVariable Long userId){
@@ -90,6 +86,27 @@ public class RoomController {
                 .stream()
                 .map(userMapper::toDtoSecure)
                 .toList());
+    }
+
+    @DeleteMapping("delete/{roomId}")
+    public ResponseEntity<String> deleteRoom(@PathVariable Long roomId){
+        try {
+            roomService.deleteRoomById(roomId);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok("Room deleted successfully");
+    }
+
+    @PutMapping("{roomId}/remove/user/{userId}")
+    public ResponseEntity<String> removeUserFromRoom( @PathVariable Long roomId , @PathVariable Long userId){
+        try {
+            roomService.removeMember(roomId, userId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok("User removed from group successfully");
     }
 
 

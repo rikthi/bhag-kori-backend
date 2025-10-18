@@ -90,6 +90,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public void deleteRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElse(null);
+        if (room == null){
+            throw new IllegalArgumentException("Room not found");
+        }
+        roomRepository.deleteById(roomId);
+    }
+
+    @Override
     public Room addMember(Long roomId, Long memberId) {
         Room repoRoom = roomRepository.findById(roomId).orElse(null);
         User member = userRepository.findById(memberId).orElse(null);
@@ -126,14 +135,15 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room removeMember(Long roomId, Long memberId) {
         Room repoRoom = roomRepository.findById(roomId).orElse(null);
-        User member = userRepository.findById(memberId).orElse(null);
 
         if (repoRoom == null){
-            throw new RuntimeException("Room not found");
+            throw new IllegalArgumentException("Room not found");
         }
 
+        User member = userRepository.findById(memberId).orElse(null);
+
         if (member == null){
-            throw new RuntimeException("Member not found");
+            throw new IllegalArgumentException("Member not found");
         }
 
         User toBeRemoved = null;
