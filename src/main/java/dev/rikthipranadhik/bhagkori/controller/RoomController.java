@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping(path="api/v1/room")
 @AllArgsConstructor
 public class RoomController {

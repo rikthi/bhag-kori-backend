@@ -20,7 +20,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path="api/v1/expense")
-@CrossOrigin("*")
 @AllArgsConstructor
 public class ExpenseController {
 
