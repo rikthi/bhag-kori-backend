@@ -40,3 +40,7 @@ For demonstration, you can use the credentials:
 * **Database:** MySQL
 * **Frontend:** React.js
 * **Deployment:** Microsoft Azure App Service, Microsoft Azure MySQL Database and Microsoft Azure Static Web App
+
+# Frontend Repos:
+* Web: https://github.com/rikthi/bhag-kori-web-frontend
+* Mobile: https://github.com/ArafKabir/bhag-kori-frontend
