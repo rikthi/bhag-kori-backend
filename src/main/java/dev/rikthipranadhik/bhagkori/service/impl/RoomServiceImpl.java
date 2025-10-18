@@ -92,9 +92,19 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoomById(Long roomId) {
         Room room = roomRepository.findById(roomId).orElse(null);
+
         if (room == null){
             throw new IllegalArgumentException("Room not found");
         }
+
+        for (User u : room.getMembers()) {
+            Set<Room> rooms = u.getRooms();
+            rooms.remove(room);
+            u.setRooms(rooms);
+            userRepository.save(u);
+        }
+
+
         roomRepository.deleteById(roomId);
     }
 
