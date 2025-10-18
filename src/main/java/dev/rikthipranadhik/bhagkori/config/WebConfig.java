@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // Apply this rule to all endpoints
                 .allowedOrigins(
                         "http://localhost:5173", // Your local React dev server
-                        "https://<YOUR_AZURE_STATIC_WEB_APP_URL>" // Your deployed frontend URL
+                        "https://black-beach-0d69cae0f.3.azurestaticapps.net" // Your deployed frontend URL
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
