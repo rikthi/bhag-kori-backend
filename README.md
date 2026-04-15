@@ -1,9 +1,4 @@
-# Bhag Kori (ভাগ করি) - Share Expenses, Simplify Life
-
-Bhag Kori is a web application designed to help you and your friends, family, or roommates effortlessly manage shared expenses. Whether you're splitting bills for a household, tracking costs on a group trip, or managing a project budget, Bhag Kori ensures everyone pays their fair share without the hassle.
-
-The name "Bhag Kori" (ভাগ করি) means "Let's Share" in Bengali, reflecting the app's core purpose of making sharing simple and transparent.
-
+# Bhag Kori 
 # Link to in progress deployment: https://black-beach-0d69cae0f.3.azurestaticapps.net
 Note: The backend might need a bit of time to spool up. 
 
